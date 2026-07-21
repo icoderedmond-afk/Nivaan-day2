@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Trivia Master</title>
+    <style>
+        :root {
+            --primary: #1b4332;
+            --primary-light: #2d6a4f;
+            --accent: #d8f3dc;
+            --gold: #ffb703;
+            --correct: #2a9d8f;
+            --incorrect: #e76f51;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-image: radial-gradient(#1b4332 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            background-color: #f4f7f5;
+        }
+
+        header {
+            width: 100%;
+            background: linear-gradient(135deg, #081c15, #1b4332);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header p {
+            color: #b7e4c7;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            width: 100%;
+            max-width: 680px;
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+        }
+
+        .welcome-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-screen h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-screen p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .rules-list {
+            text-align: left;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem 1.25rem 2.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .rules-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Quiz Controls & Stats */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #40916c, #52b788);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .question-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary-light);
+            background: #f1f8f5;
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--correct) !important;
+            color: #155724 !important;
+            font-weight: 700;
+        }
+
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: var(--incorrect) !important;
+            color: #721c24 !important;
+        }
+
+        .explanation-box {
+            background: #eef7f2;
+            border-left: 4px solid var(--primary-light);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            color: #2d3748;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(27, 67, 50, 0.35);
+            background: linear-gradient(135deg, #143628, #23553f);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            text-align: center;
+        }
+
+        .score-badge {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d8f3dc, #b7e4c7);
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            border: 4px solid var(--primary);
+        }
+
+        .score-badge .score-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-badge .score-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .performance-title {
+            font-size: 1.6rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .performance-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        footer {
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 576px) {
+            header h1 { font-size: 1.75rem; }
+            .card { padding: 1.5rem; }
+            .question-title { font-size: 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏏 Cricket Trivia Master</h1>
+        <p>Test your knowledge on Test matches, World Cups, IPL, legends & records!</p>
+    </header>
+
+    <main>
+        <div id="welcome-screen" class="card welcome-screen">
+            <div class="welcome-icon">🏆</div>
+            <h2>Ready to Take the Crease?</h2>
+            <p>Every quiz session randomly generates 10 unique questions from our 20-question cricket trivia vault.</p>
+            
+            <ul class="rules-list">
+                <li>⚡ <strong>10 Random Questions</strong> per game session</li>
+                <li>🎯 Immediate explanations after each answer</li>
+                <li>📊 Final score and rating evaluation</li>
+            </ul>
+
+            <button id="start-btn" class="btn">Start Quiz Challenge 🚀</button>
+        </div>
+
+        <div id="quiz-screen" class="card" style="display: none;">
+            <div class="quiz-header">
+                <span id="question-tracker">Question 1/10</span>
+                <span id="score-tracker">Score: 0</span>
+            </div>
+
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+            <h3 id="question-text" class="question-title">Loading question...</h3>
+
+            <div id="options-container" class="options-container"></div>
+
+            <div id="explanation-box" class="explanation-box"></div>
+
+            <button id="next-btn" class="btn" style="display: none;">Next Question ➔</button>
+        </div>
+
+        <div id="result-screen" class="card results-screen" style="display: none;">
+            <div class="score-badge">
+                <span id="final-score" class="score-num">0/10</span>
+                <span class="score-label">Final Score</span>
+            </div>
+
+            <h2 id="performance-title" class="performance-title">Great Effort!</h2>
+            <p id="performance-desc" class="performance-desc">You showed some solid cricketing knowledge on the pitch.</p>
+
+            <button id="restart-btn" class="btn">Play Again (New Questions) 🔄</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Cricket Trivia Master &copy; Interactive Cricket Quiz Game</p>
+    </footer>
+
+    <script>
+        // Master Pool of 20 Cricket Questions
+        const questionBank = [
+            {
+                question: "1. Who is the only batsman to score 400 runs in a single Test innings?",
+                options: ["Sachin Tendulkar", "Brian Lara", "Ricky Ponting", "Don Bradman"],
+                answer: 1,
+                explanation: "Brian Lara scored 400 not out against England at St John's, Antigua in 2004."
+            },
+            {
+                question: "2. Which bowler has taken the highest number of wickets in Test cricket history?",
+                options: ["Shane Warne", "Muttiah Muralitharan", "James Anderson", "Anil Kumble"],
+                answer: 1,
+                explanation: "Muttiah Muralitharan of Sri Lanka holds the record with 800 Test wickets."
+            },
+            {
+                question: "3. Which country won the inaugural ICC Men's T20 World Cup in 2007?",
+                options: ["Pakistan", "Australia", "India", "West Indies"],
+                answer: 2,
+                explanation: "India defeated Pakistan in a dramatic final in Johannesburg to win the 2007 T20 World Cup."
+            },
+            {
+                question: "4. What is the highest individual score in Men's One Day Internationals (ODI)?",
+                options: ["264 by Rohit Sharma", "237* by Martin Guptill", "219 by Virender Sehwag", "200* by Sachin Tendulkar"],
+                answer: 0,
+                explanation: "Rohit Sharma smashed 264 runs off 173 balls against Sri Lanka in Kolkata in 2014."
+            },
+            {
+                question: "5. Who was the captain of the Indian cricket team that won the 1983 World Cup?",
+                options: ["Sunil Gavaskar", "Kapil Dev", "Ravi Shastri", "Mohinder Amarnath"],
+                answer: 1,
+                explanation: "Kapil Dev led India to its historic first World Cup victory in 1983, defeating the West Indies at Lord's."
+            },
+            {
+                question: "6. Who was the first cricketer to hit 6 sixes in an over in T20 International cricket?",
+                options: ["Yuvraj Singh", "Kieron Pollard", "Herschelle Gibbs", "Rinku Singh"],
+                answer: 0,
+                explanation: "Yuvraj Singh hit Stuart Broad for 6 sixes in an over during the 2007 T20 World Cup."
+            },
+            {
+                question: "7. Which venue is widely referred to as the 'Home of Cricket'?",
+                options: ["Melbourne Cricket Ground (MCG)", "Lord's, London", "Eden Gardens, Kolkata", "The Oval"],
+                answer: 1,
+                explanation: "Lord's Cricket Ground in London, established in 1814, is traditionally known as the Home of Cricket."
+            },
+            {
+                question: "8. What is Sir Donald Bradman's famous career Test batting average?",
+                options: ["88.65", "95.12", "99.94", "102.40"],
+                answer: 2,
+                explanation: "Sir Don Bradman retired with an unrivaled career Test batting average of 99.94."
+            },
+            {
+                question: "9. Who holds the record for the fastest century in ODI cricket (in terms of balls faced)?",
+                options: ["Shahid Afridi", "AB de Villiers", "Corey Anderson", "Glenn Maxwell"],
+                answer: 1,
+                explanation: "AB de Villiers scored a century off just 31 balls against the West Indies in Johannesburg in 2015."
+            },
+            {
+                question: "10. Which bowler took all 10 wickets in a single Test match innings first in history?",
+                options: ["Anil Kumble", "Jim Laker", "Ajaz Patel", "Richard Hadlee"],
+                answer: 1,
+                explanation: "Jim Laker of England took 10/53 against Australia at Old Trafford in 1956."
+            },
+            {
+                question: "11. Which team won the first-ever Indian Premier League (IPL) season in 2008?",
+                options: ["Chennai Super Kings", "Mumbai Indians", "Rajasthan Royals", "Kolkata Knight Riders"],
+                answer: 2,
+                explanation: "Rajasthan Royals, led by Shane Warne, won the inaugural IPL title in 2008."
+            },
+            {
+                question: "12. What is the maximum allowed duration of a standard Test match?",
+                options: ["3 Days", "4 Days", "5 Days", "6 Days"],
+                answer: 2,
+                explanation: "Standard Test matches are scheduled over a maximum of 5 consecutive days."
+            },
+            {
+                question: "13. Who was the first batsman to reach 10,000 runs in Test cricket?",
+                options: ["Sunil Gavaskar", "Allan Border", "Sachin Tendulkar", "Viv Richards"],
+                answer: 0,
+                explanation: "Sunil Gavaskar of India was the first player in history to score 10,000 Test runs, achieving the feat in 1987."
+            },
+            {
+                question: "14. Which country has won the most ICC Men's Cricket World Cup (50-over) titles?",
+                options: ["West Indies", "India", "England", "Australia"],
+                answer: 3,
+                explanation: "Australia has won the ODI World Cup six times (1987, 1999, 2003, 2007, 2015, 2023)."
+            },
+            {
+                question: "15. What does the term 'Mankading' refer to in cricket?",
+                options: ["A type of leg-spin delivery", "Running out a non-striker backing up before the ball is bowled", "Hitting a six over the bowler's head", "Catching the ball with one hand"],
+                answer: 1,
+                explanation: "Named after Vinoo Mankad, it refers to a bowler running out the non-striker who leaves their crease prematurely."
+            },
+            {
+                question: "16. Who took the iconic catch to dismiss Vivian Richards in the 1983 World Cup Final?",
+                options: ["Madan Lal", "Kapil Dev", "Mohinder Amarnath", "Kris Srikkanth"],
+                answer: 1,
+                explanation: "Kapil Dev ran backwards for over 20 yards to take an iconic running catch off Madan Lal's bowling."
+            },
+            {
+                question: "17. Which bowler has taken the most international hat-tricks across all formats combined?",
+                options: ["Wasim Akram", "Lasith Malinga", "Brett Lee", "Mitchell Starc"],
+                answer: 1,
+                explanation: "Lasith Malinga has 5 international hat-tricks (3 in ODIs, 2 in T20Is), the most in history."
+            },
+            {
+                question: "18. In cricket terminology, what is a 'Duck'?",
+                options: ["Scoring zero runs", "A wet outfield delay", "Bowling 5 consecutive wide balls", "Getting out on the first ball of the match"],
+                answer: 0,
+                explanation: "A batsman who gets dismissed without scoring any runs is said to be out for a 'duck'."
+            },
+            {
+                question: "19. Who was the first player to hit 100 international centuries?",
+                options: ["Ricky Ponting", "Virat Kohli", "Sachin Tendulkar", "Kumar Sangakkara"],
+                answer: 2,
+                explanation: "Sachin Tendulkar achieved the unprecedented milestone of 100 international centuries in 2012."
+            },
+            {
+                question: "20. What is the distance between the two sets of wickets on a standard cricket pitch?",
+                options: ["20 yards", "22 yards", "24 yards", "18 yards"],
+                answer: 1,
+                explanation: "The pitch length between wickets is exactly 22 yards (66 feet / 20.12 meters)."
+            }
+        ];
+
+        // Game State Variables
+        const QUESTIONS_PER_GAME = 10;
+        let activeQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let hasAnsweredCurrent = false;
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+
+        const questionTracker = document.getElementById('question-tracker');
+        const scoreTracker = document.getElementById('score-tracker');
+        const progressBar = document.getElementById('progress-bar');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationBox = document.getElementById('explanation-box');
+
+        const finalScore = document.getElementById('final-score');
+        const performanceTitle = document.getElementById('performance-title');
+        const performanceDesc = document.getElementById('performance-desc');
+
+        // Fisher-Yates Shuffle Algorithm for proper randomness
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Quiz with 10 Randomly Picked Questions
+        function startQuiz() {
+            activeQuestions = shuffleArray(questionBank).slice(0, QUESTIONS_PER_GAME);
+            currentQuestionIndex = 0;
+            score = 0;
+            hasAnsweredCurrent = false;
+
+            welcomeScreen.style.display = 'none';
+            resultScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+
+            loadQuestion();
+        }
+
+        // Load Question UI
+        function loadQuestion() {
+            hasAnsweredCurrent = false;
+            explanationBox.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            const q = activeQuestions[currentQuestionIndex];
+
+            questionTracker.textContent = `Question ${currentQuestionIndex + 1}/${activeQuestions.length}`;
+            scoreTracker.textContent = `Score: ${score}`;
+            progressBar.style.width = `${((currentQuestionIndex) / activeQuestions.length) * 100}%`;
+
+            questionText.textContent = q.question;
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((optionText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span>${optionText}</span>`;
+                btn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // Option Click Handler
+        function selectOption(selectedIndex) {
+            if (hasAnsweredCurrent) return;
+            hasAnsweredCurrent = true;
+
+            const q = activeQuestions[currentQuestionIndex];
+            const optionButtons = optionsContainer.children;
+
+            if (selectedIndex === q.answer) {
+                score++;
+                optionButtons[selectedIndex].classList.add('correct');
+                scoreTracker.textContent = `Score: ${score}`;
+            } else {
+                optionButtons[selectedIndex].classList.add('incorrect');
+                optionButtons[q.answer].classList.add('correct');
+            }
+
+            Array.from(optionButtons).forEach(btn => {
+                btn.setAttribute('disabled', 'true');
+            });
+
+            explanationBox.textContent = q.explanation;
+            explanationBox.style.display = 'block';
+
+            if (currentQuestionIndex < activeQuestions.length - 1) {
+                nextBtn.textContent = 'Next Question ➔';
+            } else {
+                nextBtn.textContent = 'View Final Score 🏆';
+            }
+            nextBtn.style.display = 'inline-flex';
+        }
+
+        // Next Question Handler
+        function handleNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < activeQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Show Final Results
+        function showResults() {
+            quizScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+
+            finalScore.textContent = `${score}/${activeQuestions.length}`;
+
+            const percentage = (score / activeQuestions.length) * 100;
+
+            if (percentage === 100) {
+                performanceTitle.textContent = "🏆 Legendary Cricketer!";
+                performanceDesc.textContent = "Unbelievable performance! You possess master-level knowledge of cricket history and stats.";
+            } else if (percentage >= 70) {
+                performanceTitle.textContent = "🌟 Star Performer!";
+                performanceDesc.textContent = "Great knock! You really know your way around cricket records and iconic moments.";
+            } else if (percentage >= 40) {
+                performanceTitle.textContent = "🏏 Solid All-Rounder!";
+                performanceDesc.textContent = "Decent effort on the pitch. A little more practice and you'll be hitting centuries!";
+            } else {
+                performanceTitle.textContent = "🌱 Grassroots Fan";
+                performanceDesc.textContent = "Good try! Time to catch up on some classic match highlights and test your skills again.";
+            }
+        }
+
+        // Event Listeners
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', handleNextQuestion);
+        restartBtn.addEventListener('click', startQuiz);
+    </script>
+</body>
+</html>
