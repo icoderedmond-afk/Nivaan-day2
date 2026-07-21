@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cricket Trivia Master</title>
+    <title>Mastermind Cricket Trivia (100-Question Vault)</title>
     <style>
         :root {
             --primary: #1b4332;
             --primary-light: #2d6a4f;
             --accent: #d8f3dc;
-            --gold: #ffb703;
             --correct: #2a9d8f;
             --incorrect: #e76f51;
-            --bg: #f8f9fa;
+            --bg: #f4f7f5;
             --card-bg: #ffffff;
             --text: #212529;
             --text-muted: #6c757d;
@@ -37,7 +36,6 @@
             align-items: center;
             background-image: radial-gradient(#1b4332 0.75px, transparent 0.75px);
             background-size: 24px 24px;
-            background-color: #f4f7f5;
         }
 
         header {
@@ -53,10 +51,6 @@
             font-size: 2.2rem;
             font-weight: 800;
             margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         header p {
@@ -82,56 +76,43 @@
             box-shadow: var(--shadow);
             padding: 2.5rem;
             width: 100%;
-            transition: all 0.3s ease;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Welcome Screen */
-        .welcome-screen {
-            text-align: center;
-        }
-
-        .welcome-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .welcome-screen h2 {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .welcome-screen p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .rules-list {
+        .input-group {
+            margin-bottom: 1.25rem;
             text-align: left;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 1.25rem 1.5rem 1.25rem 2.5rem;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-            color: #495057;
         }
 
-        .rules-list li {
+        .input-group label {
+            display: block;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--primary);
         }
 
-        /* Quiz Controls & Stats */
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-light);
+        }
+
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
         }
 
@@ -152,7 +133,7 @@
         }
 
         .question-title {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 1.5rem;
@@ -177,15 +158,11 @@
             transition: all 0.2s ease;
             font-weight: 500;
             color: var(--text);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .option-btn:hover:not([disabled]) {
             border-color: var(--primary-light);
             background: #f1f8f5;
-            transform: translateY(-2px);
         }
 
         .option-btn.correct {
@@ -208,12 +185,9 @@
             border-radius: 0 8px 8px 0;
             margin-bottom: 1.5rem;
             font-size: 0.95rem;
-            color: #2d3748;
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
-        /* Buttons */
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
@@ -223,22 +197,14 @@
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
             width: 100%;
+            transition: transform 0.2s;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(27, 67, 50, 0.35);
-            background: linear-gradient(135deg, #143628, #23553f);
         }
 
-        /* Results Screen */
         .results-screen {
             text-align: center;
         }
@@ -247,7 +213,7 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #d8f3dc, #b7e4c7);
+            background: #d8f3dc;
             color: var(--primary);
             display: flex;
             flex-direction: column;
@@ -255,32 +221,8 @@
             justify-content: center;
             margin: 0 auto 1.5rem auto;
             border: 4px solid var(--primary);
-        }
-
-        .score-badge .score-num {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
-            line-height: 1;
-        }
-
-        .score-badge .score-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        .performance-title {
-            font-size: 1.6rem;
-            color: var(--primary);
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .performance-desc {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 1rem;
         }
 
         footer {
@@ -289,43 +231,38 @@
             color: var(--text-muted);
             font-size: 0.85rem;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 576px) {
-            header h1 { font-size: 1.75rem; }
-            .card { padding: 1.5rem; }
-            .question-title { font-size: 1.15rem; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🏏 Cricket Trivia Master</h1>
-        <p>Test your knowledge on Test matches, World Cups, IPL, legends & records!</p>
+        <h1>🏏 Mastermind Cricket Trivia</h1>
+        <p>100 Expert-Level Questions on Cricket History, Records & Statistics</p>
     </header>
 
     <main>
-        <div id="welcome-screen" class="card welcome-screen">
-            <div class="welcome-icon">🏆</div>
-            <h2>Ready to Take the Crease?</h2>
-            <p>Every quiz session randomly generates 10 unique questions from our 20-question cricket trivia vault.</p>
+        <div id="welcome-screen" class="card">
+            <h2 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">Player Registration</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; text-align: center;">Enter your name and age to begin the challenge.</p>
             
-            <ul class="rules-list">
-                <li>⚡ <strong>10 Random Questions</strong> per game session</li>
-                <li>🎯 Immediate explanations after each answer</li>
-                <li>📊 Final score and rating evaluation</li>
-            </ul>
+            <form id="player-form">
+                <div class="input-group">
+                    <label for="player-name">Full Name</label>
+                    <input type="text" id="player-name" placeholder="Enter your name" required>
+                </div>
 
-            <button id="start-btn" class="btn">Start Quiz Challenge 🚀</button>
+                <div class="input-group">
+                    <label for="player-age">Age</label>
+                    <input type="number" id="player-age" placeholder="Enter your age" min="5" max="120" required>
+                </div>
+
+                <button type="submit" class="btn">Start Quiz Challenge 🚀</button>
+            </form>
         </div>
 
         <div id="quiz-screen" class="card" style="display: none;">
             <div class="quiz-header">
+                <span id="player-display">Player: -</span>
                 <span id="question-tracker">Question 1/10</span>
                 <span id="score-tracker">Score: 0</span>
             </div>
@@ -334,187 +271,159 @@
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
 
-            <h3 id="question-text" class="question-title">Loading question...</h3>
-
+            <h3 id="question-text" class="question-title">Loading...</h3>
             <div id="options-container" class="options-container"></div>
-
             <div id="explanation-box" class="explanation-box"></div>
 
             <button id="next-btn" class="btn" style="display: none;">Next Question ➔</button>
         </div>
 
         <div id="result-screen" class="card results-screen" style="display: none;">
-            <div class="score-badge">
-                <span id="final-score" class="score-num">0/10</span>
-                <span class="score-label">Final Score</span>
-            </div>
+            <div class="score-badge" id="final-score">0/10</div>
+            <h2 id="result-user-title" style="color: var(--primary); margin-bottom: 0.5rem;">Completed!</h2>
+            <p id="performance-desc" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
 
-            <h2 id="performance-title" class="performance-title">Great Effort!</h2>
-            <p id="performance-desc" class="performance-desc">You showed some solid cricketing knowledge on the pitch.</p>
-
-            <button id="restart-btn" class="btn">Play Again (New Questions) 🔄</button>
+            <button id="restart-btn" class="btn">Play Again (Random 10 Questions) 🔄</button>
         </div>
     </main>
 
     <footer>
-        <p>Cricket Trivia Master &copy; Interactive Cricket Quiz Game</p>
+        <p>Mastermind Cricket Trivia &copy; Interactive Local Quiz Application</p>
     </footer>
 
     <script>
-        // Master Pool of 20 Cricket Questions
-        const questionBank = [
-            {
-                question: "1. Who is the only batsman to score 400 runs in a single Test innings?",
-                options: ["Sachin Tendulkar", "Brian Lara", "Ricky Ponting", "Don Bradman"],
-                answer: 1,
-                explanation: "Brian Lara scored 400 not out against England at St John's, Antigua in 2004."
-            },
-            {
-                question: "2. Which bowler has taken the highest number of wickets in Test cricket history?",
-                options: ["Shane Warne", "Muttiah Muralitharan", "James Anderson", "Anil Kumble"],
-                answer: 1,
-                explanation: "Muttiah Muralitharan of Sri Lanka holds the record with 800 Test wickets."
-            },
-            {
-                question: "3. Which country won the inaugural ICC Men's T20 World Cup in 2007?",
-                options: ["Pakistan", "Australia", "India", "West Indies"],
-                answer: 2,
-                explanation: "India defeated Pakistan in a dramatic final in Johannesburg to win the 2007 T20 World Cup."
-            },
-            {
-                question: "4. What is the highest individual score in Men's One Day Internationals (ODI)?",
-                options: ["264 by Rohit Sharma", "237* by Martin Guptill", "219 by Virender Sehwag", "200* by Sachin Tendulkar"],
-                answer: 0,
-                explanation: "Rohit Sharma smashed 264 runs off 173 balls against Sri Lanka in Kolkata in 2014."
-            },
-            {
-                question: "5. Who was the captain of the Indian cricket team that won the 1983 World Cup?",
-                options: ["Sunil Gavaskar", "Kapil Dev", "Ravi Shastri", "Mohinder Amarnath"],
-                answer: 1,
-                explanation: "Kapil Dev led India to its historic first World Cup victory in 1983, defeating the West Indies at Lord's."
-            },
-            {
-                question: "6. Who was the first cricketer to hit 6 sixes in an over in T20 International cricket?",
-                options: ["Yuvraj Singh", "Kieron Pollard", "Herschelle Gibbs", "Rinku Singh"],
-                answer: 0,
-                explanation: "Yuvraj Singh hit Stuart Broad for 6 sixes in an over during the 2007 T20 World Cup."
-            },
-            {
-                question: "7. Which venue is widely referred to as the 'Home of Cricket'?",
-                options: ["Melbourne Cricket Ground (MCG)", "Lord's, London", "Eden Gardens, Kolkata", "The Oval"],
-                answer: 1,
-                explanation: "Lord's Cricket Ground in London, established in 1814, is traditionally known as the Home of Cricket."
-            },
-            {
-                question: "8. What is Sir Donald Bradman's famous career Test batting average?",
-                options: ["88.65", "95.12", "99.94", "102.40"],
-                answer: 2,
-                explanation: "Sir Don Bradman retired with an unrivaled career Test batting average of 99.94."
-            },
-            {
-                question: "9. Who holds the record for the fastest century in ODI cricket (in terms of balls faced)?",
-                options: ["Shahid Afridi", "AB de Villiers", "Corey Anderson", "Glenn Maxwell"],
-                answer: 1,
-                explanation: "AB de Villiers scored a century off just 31 balls against the West Indies in Johannesburg in 2015."
-            },
-            {
-                question: "10. Which bowler took all 10 wickets in a single Test match innings first in history?",
-                options: ["Anil Kumble", "Jim Laker", "Ajaz Patel", "Richard Hadlee"],
-                answer: 1,
-                explanation: "Jim Laker of England took 10/53 against Australia at Old Trafford in 1956."
-            },
-            {
-                question: "11. Which team won the first-ever Indian Premier League (IPL) season in 2008?",
-                options: ["Chennai Super Kings", "Mumbai Indians", "Rajasthan Royals", "Kolkata Knight Riders"],
-                answer: 2,
-                explanation: "Rajasthan Royals, led by Shane Warne, won the inaugural IPL title in 2008."
-            },
-            {
-                question: "12. What is the maximum allowed duration of a standard Test match?",
-                options: ["3 Days", "4 Days", "5 Days", "6 Days"],
-                answer: 2,
-                explanation: "Standard Test matches are scheduled over a maximum of 5 consecutive days."
-            },
-            {
-                question: "13. Who was the first batsman to reach 10,000 runs in Test cricket?",
-                options: ["Sunil Gavaskar", "Allan Border", "Sachin Tendulkar", "Viv Richards"],
-                answer: 0,
-                explanation: "Sunil Gavaskar of India was the first player in history to score 10,000 Test runs, achieving the feat in 1987."
-            },
-            {
-                question: "14. Which country has won the most ICC Men's Cricket World Cup (50-over) titles?",
-                options: ["West Indies", "India", "England", "Australia"],
-                answer: 3,
-                explanation: "Australia has won the ODI World Cup six times (1987, 1999, 2003, 2007, 2015, 2023)."
-            },
-            {
-                question: "15. What does the term 'Mankading' refer to in cricket?",
-                options: ["A type of leg-spin delivery", "Running out a non-striker backing up before the ball is bowled", "Hitting a six over the bowler's head", "Catching the ball with one hand"],
-                answer: 1,
-                explanation: "Named after Vinoo Mankad, it refers to a bowler running out the non-striker who leaves their crease prematurely."
-            },
-            {
-                question: "16. Who took the iconic catch to dismiss Vivian Richards in the 1983 World Cup Final?",
-                options: ["Madan Lal", "Kapil Dev", "Mohinder Amarnath", "Kris Srikkanth"],
-                answer: 1,
-                explanation: "Kapil Dev ran backwards for over 20 yards to take an iconic running catch off Madan Lal's bowling."
-            },
-            {
-                question: "17. Which bowler has taken the most international hat-tricks across all formats combined?",
-                options: ["Wasim Akram", "Lasith Malinga", "Brett Lee", "Mitchell Starc"],
-                answer: 1,
-                explanation: "Lasith Malinga has 5 international hat-tricks (3 in ODIs, 2 in T20Is), the most in history."
-            },
-            {
-                question: "18. In cricket terminology, what is a 'Duck'?",
-                options: ["Scoring zero runs", "A wet outfield delay", "Bowling 5 consecutive wide balls", "Getting out on the first ball of the match"],
-                answer: 0,
-                explanation: "A batsman who gets dismissed without scoring any runs is said to be out for a 'duck'."
-            },
-            {
-                question: "19. Who was the first player to hit 100 international centuries?",
-                options: ["Ricky Ponting", "Virat Kohli", "Sachin Tendulkar", "Kumar Sangakkara"],
-                answer: 2,
-                explanation: "Sachin Tendulkar achieved the unprecedented milestone of 100 international centuries in 2012."
-            },
-            {
-                question: "20. What is the distance between the two sets of wickets on a standard cricket pitch?",
-                options: ["20 yards", "22 yards", "24 yards", "18 yards"],
-                answer: 1,
-                explanation: "The pitch length between wickets is exactly 22 yards (66 feet / 20.12 meters)."
-            }
+        // Bank of 100 Hard Cricket Trivia Questions
+        const masterQuestionBank = [
+            { question: "1. Who was the first bowler in Test history to reach 500 wickets?", options: ["Shane Warne", "Courtney Walsh", "Muttiah Muralitharan", "Glenn McGrath"], answer: 1, explanation: "Courtney Walsh reached 500 Test wickets in 2001 against South Africa." },
+            { question: "2. Who scored the fastest century in Test cricket (by balls faced)?", options: ["Brendon McCullum", "Viv Richards", "Misbah-ul-Haq", "Adam Gilchrist"], answer: 0, explanation: "Brendon McCullum hit a 54-ball century against Australia in 2016." },
+            { question: "3. What are the best bowling figures recorded in an ODI match?", options: ["8/19 by Chaminda Vaas", "8/34 by Muttiah Muralitharan", "7/12 by Shahid Afridi", "7/15 by Glenn McGrath"], answer: 0, explanation: "Chaminda Vaas took 8/19 against Zimbabwe in Colombo in 2001." },
+            { question: "4. Who was the first cricketer to score an individual double century in Women's ODIs?", options: ["Belinda Clark", "Sachin Tendulkar", "Mithali Raj", "Amelia Kerr"], answer: 0, explanation: "Belinda Clark scored 229* against Denmark in 1997, 13 years before Sachin Tendulkar's 200*." },
+            { question: "5. Which ground hosted the first official international cricket match in 1844?", options: ["Lord's", "St George's CC, NY", "MCG", "The Oval"], answer: 1, explanation: "The USA played Canada at St George's Cricket Club in Manhattan, New York." },
+            { question: "6. Who bowled the first maiden over in T20 International history?", options: ["Jeetan Patel", "Mohammad Amir", "Jasprit Bumrah", "Sreesanth"], answer: 0, explanation: "New Zealand's Jeetan Patel bowled a maiden against South Africa in 2005." },
+            { question: "7. Who holds the record for the highest score by a nightwatchman in Test cricket?", options: ["Jason Gillespie", "Mark Boucher", "Alex Tudor", "Harold Larwood"], answer: 0, explanation: "Jason Gillespie scored 201* against Bangladesh in 2006." },
+            { question: "8. Who claimed the first hat-trick in ICC Cricket World Cup history?", options: ["Chetan Sharma", "Wasim Akram", "Saqlain Mushtaq", "Chaminda Vaas"], answer: 0, explanation: "Chetan Sharma took a hat-trick against New Zealand in 1987." },
+            { question: "9. What is the highest team total ever recorded in Test match history?", options: ["952/6 by Sri Lanka", "903/7 by England", "757/7 by Australia", "790/3 by West Indies"], answer: 0, explanation: "Sri Lanka scored 952/6 declared against India at Colombo in 1997." },
+            { question: "10. Who was the first player in international cricket to be dismissed 'Timed Out'?", options: ["Angelo Mathews", "Sourav Ganguly", "Sachin Tendulkar", "Andrew Symonds"], answer: 0, explanation: "Angelo Mathews was timed out against Bangladesh at the 2023 World Cup." },
+            { question: "11. Who holds the record for most ducks in Test match history?", options: ["Courtney Walsh", "Muttiah Muralitharan", "James Anderson", "Glenn McGrath"], answer: 0, explanation: "Courtney Walsh holds the record with 43 ducks in Test cricket." },
+            { question: "12. Who was the first batsman to reach 10,000 runs in ODI cricket?", options: ["Sachin Tendulkar", "Inzamam-ul-Haq", "Sourav Ganguly", "Ricky Ponting"], answer: 0, explanation: "Sachin Tendulkar reached 10,000 ODI runs in 2001 against Australia." },
+            { question: "13. Which bowler took 19 wickets in a single Test match at Old Trafford in 1956?", options: ["Jim Laker", "Brian Statham", "Fred Trueman", "Alec Bedser"], answer: 0, explanation: "Jim Laker took 9/37 and 10/53 against Australia, giving him 19/90 overall." },
+            { question: "14. Who holds the record for the fastest ODI fifty (in terms of balls faced)?", options: ["AB de Villiers", "Sanath Jayasuriya", "Kusal Perera", "Shahid Afridi"], answer: 0, explanation: "AB de Villiers scored a 16-ball fifty against West Indies in 2015." },
+            { question: "15. Which Indian player bowled the final over in the 2007 T20 World Cup Final?", options: ["Joginder Sharma", "Sreesanth", "Irfan Pathan", "Harbhajan Singh"], answer: 0, explanation: "Joginder Sharma bowled the last over, dismissing Misbah-ul-Haq." },
+            { question: "16. Who was the first wicketkeeper to record 500 dismissals in Test cricket?", options: ["Mark Boucher", "Adam Gilchrist", "Ian Healy", "Kumar Sangakkara"], answer: 0, explanation: "Mark Boucher reached 500 dismissals in 2011 and finished with 555." },
+            { question: "17. Which cricketer won the Man of the Match in both the semi-final and final of the 1992 World Cup?", options: ["Wasim Akram", "Inzamam-ul-Haq", "Mushtaq Ahmed", "Imran Khan"], answer: 0, explanation: "Wasim Akram's all-round impact secured award honors in both matches." },
+            { acquisition: "18", question: "18. Who scored the first century in T20 International cricket?", options: ["Chris Gayle", "Brendon McCullum", "Suresh Raina", "Mahela Jayawardene"], answer: 0, explanation: "Chris Gayle scored 117 off 57 balls against South Africa in the 2007 T20 World Cup." },
+            { question: "19. Which batsman has faced the most balls in Test cricket history?", options: ["Rahul Dravid", "Sachin Tendulkar", "Jacques Kallis", "Allan Border"], answer: 0, explanation: "Rahul Dravid faced 31,258 balls across his Test career." },
+            { question: "20. Who was the first player to captain a country in 100 Test matches?", options: ["Allan Border", "Ricky Ponting", "Graeme Smith", "Stephen Fleming"], answer: 2, explanation: "Graeme Smith captained South Africa in 109 Test matches." },
+            { question: "21. Who took the best bowling figures in an IPL match (6/12)?", options: ["Alzarri Joseph", "Sohail Tanvir", "Adam Zampa", "Anil Kumble"], answer: 0, explanation: "Alzarri Joseph took 6/12 for Mumbai Indians against SRH in 2019." },
+            { question: "22. Who was the first bowler to achieve two hat-tricks in Test cricket?", options: ["Hugh Trumble", "Jimmy Matthews", "TJ Matthews", "Wasim Akram"], answer: 0, explanation: "Hugh Trumble took Test hat-tricks in 1902 and 1904 against England." },
+            { question: "23. Who holds the record for most runs scored in a single edition of an ICC World Cup?", options: ["Virat Kohli", "Sachin Tendulkar", "Matthew Hayden", "Rohit Sharma"], answer: 0, explanation: "Virat Kohli scored 765 runs in the 2023 ICC ODI World Cup." },
+            { question: "24. Which country won the inaugural ICC World Test Championship?", options: ["New Zealand", "India", "Australia", "England"], answer: 0, explanation: "New Zealand defeated India in Southampton in June 2021." },
+            { question: "25. Who is the youngest player to play international cricket?", options: ["Hasan Raza", "Mushtaq Mohammad", "Sachin Tendulkar", "Mohammad Amir"], answer: 0, explanation: "Hasan Raza debuted for Pakistan at age 14 years and 227 days." },
+            { question: "26. Who was the first batsman to score a century in all three formats of international cricket?", options: ["Suresh Raina", "Chris Gayle", "Tillakaratne Dilshan", "Ahmed Shehzad"], answer: 0, explanation: "Suresh Raina completed centuries in Test, ODI, and T20I formats in 2010." },
+            { question: "27. Which fast bowler was known as the 'Whispering Death'?", options: ["Michael Holding", "Joel Garner", "Malcolm Marshall", "Curtly Ambrose"], answer: 0, explanation: "Michael Holding earned the nickname due to his quiet, smooth run-up." },
+            { question: "28. Who scored the highest individual score in a World Cup Final?", options: ["Adam Gilchrist", "Ricky Ponting", "Viv Richards", "Clive Lloyd"], answer: 0, explanation: "Adam Gilchrist scored 149 off 104 balls against Sri Lanka in 2007." },
+            { question: "29. Who is the only bowler to take 4 wickets in 4 consecutive balls twice in international cricket?", options: ["Lasith Malinga", "Rashid Khan", "Curtis Campher", "Jason Holder"], answer: 0, explanation: "Lasith Malinga achieved 4-in-4 against South Africa (2007) and New Zealand (2019)." },
+            { question: "30. What was the venue for the first-ever day-night Test match in 2015?", options: ["Adelaide Oval", "Eden Gardens", "Brisbane", "Melbourne Cricket Ground"], answer: 0, explanation: "Australia faced New Zealand under lights at Adelaide Oval in 2015." },
+            { question: "31. Who took all 10 wickets in a Test innings most recently (2021)?", options: ["Ajaz Patel", "Anil Kumble", "Jim Laker", "Mitchell Starc"], answer: 0, explanation: "Ajaz Patel took 10/119 for New Zealand against India in Mumbai." },
+            { question: "32. Who held the record for the fastest Test century before Brendon McCullum?", options: ["Viv Richards", "Misbah-ul-Haq", "Adam Gilchrist", "Jack Gregory"], answer: 0, explanation: "Viv Richards and Misbah-ul-Haq shared the record with 56-ball centuries." },
+            { question: "33. Which batsman scored three consecutive ODI centuries during the 1988 World Series?", options: ["Zaheer Abbas", "Saeed Anwar", "Kumar Sangakkara", "Babar Azam"], answer: 0, explanation: "Zaheer Abbas was the first player to hit three consecutive ODI hundreds (1982)." },
+            { question: "34. Who holds the record for most catches by a non-wicketkeeper in Test cricket?", options: ["Rahul Dravid", "Mahela Jayawardene", "Ricky Ponting", "Jacques Kallis"], answer: 0, explanation: "Rahul Dravid took 210 catches in 164 Test matches." },
+            { question: "35. Who was the first player to be called out for 'Handled the Ball' in ODIs?", options: ["Mohinder Amarnath", "Rameez Raja", "Daryll Cullinan", "Russell Arnold"], answer: 0, explanation: "Mohinder Amarnath was dismissed 'handled the ball' against Australia in 1986." },
+            { question: "36. Which bowler hit 6 sixes in an over in first-class cricket before Yuvraj Singh?", options: ["Malcolm Nash", "Garry Sobers", "Ravi Shastri", "Both B and C"], answer: 3, explanation: "Garry Sobers (1968) and Ravi Shastri (1985) both accomplished this in first-class cricket." },
+            { question: "37. Who hit the winning runs for England in the 2019 World Cup Final Super Over?", options: ["Jos Buttler", "Ben Stokes", "Jofra Archer", "Liam Plunkett"], answer: 0, explanation: "Jos Buttler ran out Martin Guptill on the final ball to win via boundary countback." },
+            { question: "38. Who holds the record for the most sixes in Test cricket history?", options: ["Ben Stokes", "Brendon McCullum", "Adam Gilchrist", "Chris Gayle"], answer: 0, explanation: "Ben Stokes surpassed Brendon McCullum's record of 107 sixes." },
+            { question: "39. Who scored 333 against England at Lord's in 1990?", options: ["Graham Gooch", "Brian Lara", "David Gower", "Alec Stewart"], answer: 0, explanation: "Graham Gooch scored 333 and 123 in the same match against India." },
+            { question: "40. Who was the first spin bowler to take a hat-trick in T20 Internationals?", options: ["Rashid Khan", "Astrid van der Merwe", "Wanindu Hasaranga", "Tabraiz Shamsi"], answer: 0, explanation: "Rashid Khan took a hat-trick against Ireland in 2019." },
+            { question: "41. What is the lowest total ever defended in a completed Test match?", options: ["85 runs", "99 runs", "77 runs", "111 runs"], answer: 0, explanation: "Australia defended 85 runs against England at The Oval in 1882." },
+            { question: "42. Who was the first player to be subbed in as a 'Concussion Substitute' in Test cricket?", options: ["Marnus Labuschagne", "Steve Smith", "Jofra Archer", "Kusal Mendis"], answer: 0, explanation: "Marnus Labuschagne replaced Steve Smith during the Lord's Ashes Test in 2019." },
+            { question: "43. Who scored a century on Test debut, ODI debut, and T20I debut?", options: ["No player", "Kritika S", "Abid Ali", "KL Rahul"], answer: 0, explanation: "No player has scored a century on debut in all three international formats." },
+            { question: "44. Which country won the 1975 inaugural Men's Cricket World Cup?", options: ["West Indies", "Australia", "England", "Pakistan"], answer: 0, explanation: "West Indies captain Clive Lloyd led his team to victory against Australia." },
+            { question: "45. Who was the first bowler to reach 400 wickets in ODI cricket?", options: ["Wasim Akram", "Waqar Younis", "Muttiah Muralitharan", "Chaminda Vaas"], answer: 0, explanation: "Wasim Akram was the first to cross 400 ODI wickets in 2000." },
+            { question: "46. Who holds the record for most Test runs in a single calendar year (1,788 runs)?", options: ["Mohammad Yousuf", "Viv Richards", "Graeme Smith", "Michael Clarke"], answer: 0, explanation: "Mohammad Yousuf scored 1,788 Test runs for Pakistan in 2006." },
+            { question: "47. Which umpire officiated in 128 Test matches, a former world record?", options: ["Steve Bucknor", "Aleem Dar", "Rudi Koertzen", "Dickie Bird"], answer: 0, explanation: "Steve Bucknor held the record before Aleem Dar surpassed him." },
+            { question: "48. Who was the captain of the Australia team that won 16 Test matches in a row?", options: ["Steve Waugh", "Ricky Ponting", "Allan Border", "Both A and B"], answer: 3, explanation: "Steve Waugh (1999-2001) and Ricky Ponting (2005-2008) both led 16-match winning streaks." },
+            { question: "49. Who took a hat-trick on his 39th birthday in Test cricket?", options: ["Peter Siddle", "Shane Warne", "Glenn McGrath", "Muttiah Muralitharan"], answer: 0, explanation: "Peter Siddle took a hat-trick on his birthday against England at Brisbane in 2010." },
+            { question: "50. Who was the first bowler to take 100 T20I wickets?", options: ["Lasith Malinga", "Shakib Al Hasan", "Rashid Khan", "Shahid Afridi"], answer: 0, explanation: "Lasith Malinga reached 100 T20I wickets in September 2019." },
+            { question: "51. Who was the first Indian batsman to score a triple century in Test cricket?", options: ["Virender Sehwag", "Karun Nair", "VVS Laxman", "Sachin Tendulkar"], answer: 0, explanation: "Virender Sehwag scored 309 against Pakistan in Multan in 2004." },
+            { question: "52. Who was the first player to achieve the 1,000 runs and 100 wickets double in T20Is?", options: ["Ellyse Perry", "Shakib Al Hasan", "Shahid Afridi", "Dwayne Bravo"], answer: 0, explanation: "Ellyse Perry achieved this milestone for Australia Women in 2019." },
+            { question: "53. Who held the record for highest individual Test score before Brian Lara's 375?", options: ["Garry Sobers", "Len Hutton", "Don Bradman", "Hanif Mohammad"], answer: 0, explanation: "Garry Sobers scored 365* against Pakistan in 1958." },
+            { question: "54. Who won the Orange Cap in the inaugural IPL season in 2008?", options: ["Shaun Marsh", "Gautam Gambhir", "Sanath Jayasuriya", "MS Dhoni"], answer: 0, explanation: "Shaun Marsh scored 616 runs for Kings XI Punjab in IPL 2008." },
+            { question: "55. Which bowler took 4 wickets in 4 balls in a Test match?", options: ["Maurice Allom", "Fred Titmus", "Vasbert Drakes", "Chris Old"], answer: 0, explanation: "Maurice Allom took 4 wickets in 5 balls (including a hat-trick) on debut in 1930." },
+            { question: "56. Who scored 183* against Sri Lanka in Jaipur in 2005?", options: ["MS Dhoni", "Virat Kohli", "Sourav Ganguly", "Yuvraj Singh"], answer: 0, explanation: "MS Dhoni's 183* remains the highest individual ODI score by a wicketkeeper." },
+            { question: "57. Who won the Man of the Tournament in the 2011 ICC ODI World Cup?", options: ["Yuvraj Singh", "Sachin Tendulkar", "Zaheer Khan", "Tillakaratne Dilshan"], answer: 0, explanation: "Yuvraj Singh scored 362 runs and took 15 wickets in the tournament." },
+            { question: "58. What is the highest partnership for any wicket in Test cricket history?", options: ["624 by Sangakkara & Jayawardene", "576 by Sanath Jayasuriya & Roshan Mahanama", "467 by Andrew Jones & Martin Crowe", "451 by Bill Ponsford & Don Bradman"], answer: 0, explanation: "Kumar Sangakkara and Mahela Jayawardene added 624 runs against South Africa in 2006." },
+            { question: "59. Who was the first bowler to reach 300 wickets in ODI cricket?", options: ["Wasim Akram", "Waqar Younis", "Kapil Dev", "Allan Donald"], answer: 0, explanation: "Wasim Akram reached 300 ODI wickets in 1996." },
+            { question: "60. Who was the first batsman to score a double century in a World Cup match?", options: ["Chris Gayle", "Martin Guptill", "Gary Kirsten", "Rohit Sharma"], answer: 0, explanation: "Chris Gayle scored 215 against Zimbabwe in the 2015 World Cup." },
+            { question: "61. Who is the fastest batsman to reach 10,000 runs in ODI cricket (by innings)?", options: ["Virat Kohli", "Sachin Tendulkar", "Rohit Sharma", "Sourav Ganguly"], answer: 0, explanation: "Virat Kohli reached 10,000 ODI runs in 205 innings." },
+            { question: "62. Which ground in England is known as the 'Gabba' of English cricket?", options: ["Edgbaston", "Lord's", "The Oval", "Headingley"], answer: 0, explanation: "Edgbaston in Birmingham has long been considered England's fortress ground." },
+            { question: "63. Who was the first cricketer to play 200 Test matches?", options: ["Sachin Tendulkar", "Ricky Ponting", "Steve Waugh", "Jacques Kallis"], answer: 0, explanation: "Sachin Tendulkar played 200 Test matches between 1989 and 2013." },
+            { question: "64. Who took 6 wickets for 7 runs in a T20 International match?", options: ["Deepak Chahar", "Ajantha Mendis", "Yuzvendra Chahal", "Rashid Khan"], answer: 0, explanation: "Deepak Chahar took 6/7 against Bangladesh in 2019." },
+            { question: "65. Who scored the highest individual score in a T20 International (172)?", options: ["Aaron Finch", "Hazratullah Zazai", "Glenn Maxwell", "Chris Gayle"], answer: 0, explanation: "Aaron Finch scored 172 against Zimbabwe in Harare in 2018." },
+            { question: "66. Who holds the record for most career dismissals by a wicketkeeper in ODIs?", options: ["Kumar Sangakkara", "Adam Gilchrist", "MS Dhoni", "Mark Boucher"], answer: 0, explanation: "Kumar Sangakkara recorded 482 dismissals in ODIs." },
+            { question: "67. Who was the first player to captain a team to 100 wins in the IPL?", options: ["MS Dhoni", "Rohit Sharma", "Gautam Gambhir", "Virat Kohli"], answer: 0, explanation: "MS Dhoni reached 100 IPL wins as captain with Chennai Super Kings." },
+            { question: "68. Who was the youngest player to score a century in Test cricket?", options: ["Mohammad Ashraful", "Mushtaq Mohammad", "Sachin Tendulkar", "Hamilton Masakadza"], answer: 0, explanation: "Mohammad Ashraful scored a Test century at 17 years 61 days against Sri Lanka in 2001." },
+            { question: "69. Who holds the record for the most sixes in ODI cricket history?", options: ["Shahid Afridi", "Chris Gayle", "Rohit Sharma", "Sanath Jayasuriya"], answer: 0, explanation: "Shahid Afridi hit 351 sixes in his ODI career." },
+            { question: "70. Who was the first bowler to take 100 wickets in IPL history?", options: ["Lasith Malinga", "Amit Mishra", "Dwayne Bravo", "Piyush Chawla"], answer: 0, explanation: "Lasith Malinga was the first bowler to reach 100 wickets in the IPL." },
+            { question: "71. Who scored the fastest double century in Test match history (by balls)?", options: ["Nathan Astle", "Ben Stokes", "Virender Sehwag", "Brendon McCullum"], answer: 0, explanation: "Nathan Astle scored a double century off 153 balls against England in 2002." },
+            { question: "72. Who took 8/86 in his debut Test match for Australia in 1988?", options: ["Jason Krejza", "Todd Murphy", "Bob Massie", "Clarrie Grimmett"], answer: 0, explanation: "Jason Krejza took 8/215 on debut against India in Nagpur in 2008." },
+            { question: "73. Who was the captain of Pakistan when they won the 2009 T20 World Cup?", options: ["Younis Khan", "Shahid Afridi", "Shoaib Malik", "Misbah-ul-Haq"], answer: 0, explanation: "Younis Khan led Pakistan to victory against Sri Lanka at Lord's." },
+            { question: "74. Who won the Player of the Match award in the 1999 ICC Cricket World Cup Final?", options: ["Shane Warne", "Tom Moody", "Adam Gilchrist", "Glenn McGrath"], answer: 0, explanation: "Shane Warne took 4/33 against Pakistan in the 1999 final." },
+            { question: "75. Who was the first batsman to reach 8,000 runs in T20 cricket (all matches)?", options: ["Chris Gayle", "Brendon McCullum", "Virat Kohli", "David Warner"], answer: 0, explanation: "Chris Gayle was the first to cross 8,000 runs in domestic and international T20s." },
+            { question: "76. Who holds the record for most centuries in a single Test series (5 centuries)?", options: ["Clyde Walcott", "Don Bradman", "Sunil Gavaskar", "Steve Smith"], answer: 0, explanation: "Clyde Walcott scored 5 centuries against Australia in 1955." },
+            { question: "77. Who was the first player to be awarded ICC Cricketer of the Year (Sir Garfield Sobers Trophy) in 2004?", options: ["Rahul Dravid", "Andrew Flintoff", "Ricky Ponting", "Jacques Kallis"], answer: 0, explanation: "Rahul Dravid won the inaugural Sir Garfield Sobers Trophy in 2004." },
+            { question: "78. Who bowled the delivery that resulted in the 'Underarm Incident' of 1981?", options: ["Trevor Chappell", "Greg Chappell", "Dennis Lillee", "Rod Marsh"], answer: 0, explanation: "Trevor Chappell bowled the underarm delivery on the instruction of captain Greg Chappell." },
+            { question: "79. Who scored 237* against West Indies in the 2015 Cricket World Cup?", options: ["Martin Guptill", "Chris Gayle", "AB de Villiers", "Brendon McCullum"], answer: 0, explanation: "Martin Guptill scored 237* off 163 balls in Wellington." },
+            { question: "80. Who was the first spin bowler to bowl in an IPL match?", options: ["Muttiah Muralitharan", "Harbhajan Singh", "Anil Kumble", "Sunil Narine"], answer: 0, explanation: "Muttiah Muralitharan bowled the first spin over for CSK against KKR in 2008." },
+            { question: "81. Who holds the record for the most stumpings in Test cricket history?", options: ["Bert Oldfield", "Godfrey Evans", "Kumar Sangakkara", "MS Dhoni"], answer: 0, explanation: "Bert Oldfield recorded 52 stumpings for Australia between 1920 and 1937." },
+            { question: "82. Who scored a Test match century in both innings of his debut match?", options: ["Yasir Hameed", "Lawrence Rowe", "Both A and B", "Neither"], answer: 2, explanation: "Lawrence Rowe (1972) and Yasir Hameed (2003) both achieved this on Test debut." },
+            { question: "83. Who took 7 wickets for 1 runs in a Women's ODI match?", options: ["Sajjida Shah", "Jo Chamberlain", "Ellyse Perry", "Jhulan Goswami"], answer: 0, explanation: "Sajjida Shah of Pakistan took 7/4 against Japan in 2003." },
+            { question: "84. Who holds the record for the highest individual score in county cricket (501*)?", options: ["Brian Lara", "Hanif Mohammad", "Don Bradman", "Graeme Hick"], answer: 0, explanation: "Brian Lara scored 501* for Warwickshire against Durham in 1994." },
+            { question: "85. Who was the first player to score 1,000 runs in T20 Internationals?", options: ["Brendon McCullum", "Chris Gayle", "Mahela Jayawardene", "Tillakaratne Dilshan"], answer: 0, explanation: "Brendon McCullum reached 1,000 T20I runs in May 2010." },
+            { question: "86. Who took 8 wickets for 8 runs in a T20 match (domestic)?", options: ["Colin Ackermann", "Arul Suppiah", "Deepak Chahar", "Syazrul Idrus"], answer: 3, explanation: "Syazrul Idrus took 7/8 for Malaysia against China in 2023." },
+            { question: "87. Who was the captain of the England team during the infamous Bodyline series of 1932-33?", options: ["Douglas Jardine", "Harold Larwood", "Gubby Allen", "Pobbler Hammond"], answer: 0, explanation: "Douglas Jardine captained England during the controversial tour." },
+            { question: "88. Who took 6 wickets in 6 balls in an Australian grade cricket match in 2017?", options: ["Aled Carey", "Neil Wagner", "Mitchell Starc", "Pat Cummins"], answer: 0, explanation: "Aled Carey bowled a perfect double hat-trick over for Golden Point CC." },
+            { question: "89. Who holds the record for most overs bowled in an ODI career?", options: ["Muttiah Muralitharan", "Wasim Akram", "Waqar Younis", "Chaminda Vaas"], answer: 0, explanation: "Muttiah Muralitharan bowled 1,881.1 overs in ODIs." },
+            { question: "90. Who scored 175* off 66 balls in an IPL match for Royal Challengers Bangalore?", options: ["Chris Gayle", "AB de Villiers", "Virat Kohli", "KL Rahul"], answer: 0, explanation: "Chris Gayle scored 175* against Pune Warriors India in 2013." },
+            { question: "91. Who was the first player to hit 500 sixes in international cricket?", options: ["Chris Gayle", "Shahid Afridi", "Rohit Sharma", "Brendon McCullum"], answer: 0, explanation: "Chris Gayle was the first player to surpass 500 sixes overall." },
+            { question: "92. Who was the first bowler to bowl a maiden over in an IPL match?", options: ["Glenn McGrath", "Sohail Tanvir", "Brett Lee", "Chaminda Vaas"], answer: 0, explanation: "Glenn McGrath bowled the first maiden over in IPL history in 2008." },
+            { question: "93. Who won the Player of the Tournament award in the 2007 ICC T20 World Cup?", options: ["Shahid Afridi", "Yuvraj Singh", "Gautam Gambhir", "Umar Gul"], answer: 0, explanation: "Shahid Afridi won the award for taking 12 wickets and scoring 91 runs." },
+            { question: "94. Who hit 36 runs off an over in an ODI match off the bowling of Daan van Bunge?", options: ["Herschelle Gibbs", "Yuvraj Singh", "Kieron Pollard", "Jaskaran Malhotra"], answer: 0, explanation: "Herschelle Gibbs hit 6 sixes in an over against the Netherlands in the 2007 World Cup." },
+            { question: "95. Who was the first player to captain India in a Test match?", options: ["CK Nayudu", "Lala Amarnath", "Vijay Hazare", "Iftikhar Ali Khan Pataudi"], answer: 0, explanation: "CK Nayudu captained India in their inaugural Test match at Lord's in 1932." },
+            { question: "96. Who scored 280* for Australia against South Africa in 2006?", options: ["Graeme Smith", "Ricky Ponting", "Adam Gilchrist", "Michael Hussey"], answer: 0, explanation: "Graeme Smith hit 277, but Mark Taylor scored 334* and Ricky Ponting 257." },
+            { question: "97. Who holds the record for the most catches in a single Test match by a fielder (8 catches)?", options: ["Ajinkya Rahane", "Yajurvindra Singh", "Greg Chappell", "Stephen Fleming"], answer: 0, explanation: "Ajinkya Rahane took 8 catches against Sri Lanka at Galle in 2015." },
+            { question: "98. Who was the first bowler to bowl 100 maiden overs in T20 cricket?", options: ["Sunil Narine", "Jasprit Bumrah", "Bhuvaneshwar Kumar", "Mohammad Amir"], answer: 0, explanation: "Sunil Narine became the first bowler to achieve 100 maiden overs in T20s." },
+            { question: "99. Who holds the record for most boundary fours in ODI history?", options: ["Sachin Tendulkar", "Sanath Jayasuriya", "Kumar Sangakkara", "Ricky Ponting"], answer: 0, explanation: "Sachin Tendulkar hit 2,016 boundary fours in ODI cricket." },
+            { question: "100. Who won the ICC Men's ODI World Cup trophy in 2023?", options: ["Australia", "India", "South Africa", "England"], answer: 0, explanation: "Australia defeated India in the final at Ahmedabad in November 2023." }
         ];
 
-        // Game State Variables
-        const QUESTIONS_PER_GAME = 10;
+        // State Setup
+        const QUESTIONS_PER_SESSION = 10;
         let activeQuestions = [];
-        let currentQuestionIndex = 0;
+        let currentIndex = 0;
         let score = 0;
-        let hasAnsweredCurrent = false;
+        let playerProfile = { name: "", age: "" };
 
         // DOM Elements
         const welcomeScreen = document.getElementById('welcome-screen');
         const quizScreen = document.getElementById('quiz-screen');
         const resultScreen = document.getElementById('result-screen');
-
-        const startBtn = document.getElementById('start-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const restartBtn = document.getElementById('restart-btn');
-
+        
+        const playerForm = document.getElementById('player-form');
+        const playerNameInput = document.getElementById('player-name');
+        const playerAgeInput = document.getElementById('player-age');
+        const playerDisplay = document.getElementById('player-display');
+        
         const questionTracker = document.getElementById('question-tracker');
         const scoreTracker = document.getElementById('score-tracker');
         const progressBar = document.getElementById('progress-bar');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const explanationBox = document.getElementById('explanation-box');
+        const nextBtn = document.getElementById('next-btn');
 
-        const finalScore = document.getElementById('final-score');
-        const performanceTitle = document.getElementById('performance-title');
-        const performanceDesc = document.getElementById('performance-desc');
-
-        // Fisher-Yates Shuffle Algorithm for proper randomness
+        // Fisher-Yates Randomization
         function shuffleArray(array) {
-            const arr = [...array];
+            let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -522,12 +431,20 @@
             return arr;
         }
 
-        // Initialize Quiz with 10 Randomly Picked Questions
+        // Form Submit
+        playerForm.onsubmit = (e) => {
+            e.preventDefault();
+            playerProfile.name = playerNameInput.value.trim();
+            playerProfile.age = playerAgeInput.value;
+
+            playerDisplay.textContent = `${playerProfile.name} (${playerProfile.age}y)`;
+            startQuiz();
+        };
+
         function startQuiz() {
-            activeQuestions = shuffleArray(questionBank).slice(0, QUESTIONS_PER_GAME);
-            currentQuestionIndex = 0;
+            activeQuestions = shuffleArray(masterQuestionBank).slice(0, QUESTIONS_PER_SESSION);
+            currentIndex = 0;
             score = 0;
-            hasAnsweredCurrent = false;
 
             welcomeScreen.style.display = 'none';
             resultScreen.style.display = 'none';
@@ -536,100 +453,68 @@
             loadQuestion();
         }
 
-        // Load Question UI
         function loadQuestion() {
-            hasAnsweredCurrent = false;
             explanationBox.style.display = 'none';
             nextBtn.style.display = 'none';
 
-            const q = activeQuestions[currentQuestionIndex];
+            const q = activeQuestions[currentIndex];
 
-            questionTracker.textContent = `Question ${currentQuestionIndex + 1}/${activeQuestions.length}`;
+            questionTracker.textContent = `Question ${currentIndex + 1}/${activeQuestions.length}`;
             scoreTracker.textContent = `Score: ${score}`;
-            progressBar.style.width = `${((currentQuestionIndex) / activeQuestions.length) * 100}%`;
+            progressBar.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
 
             questionText.textContent = q.question;
             optionsContainer.innerHTML = '';
 
-            q.options.forEach((optionText, idx) => {
+            q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<span>${optionText}</span>`;
-                btn.addEventListener('click', () => selectOption(idx));
+                btn.textContent = opt;
+                btn.onclick = () => handleAnswer(idx);
                 optionsContainer.appendChild(btn);
             });
         }
 
-        // Option Click Handler
-        function selectOption(selectedIndex) {
-            if (hasAnsweredCurrent) return;
-            hasAnsweredCurrent = true;
+        function handleAnswer(selectedIdx) {
+            const q = activeQuestions[currentIndex];
+            const buttons = optionsContainer.children;
 
-            const q = activeQuestions[currentQuestionIndex];
-            const optionButtons = optionsContainer.children;
-
-            if (selectedIndex === q.answer) {
+            if (selectedIdx === q.answer) {
                 score++;
-                optionButtons[selectedIndex].classList.add('correct');
-                scoreTracker.textContent = `Score: ${score}`;
+                buttons[selectedIdx].classList.add('correct');
             } else {
-                optionButtons[selectedIndex].classList.add('incorrect');
-                optionButtons[q.answer].classList.add('correct');
+                buttons[selectedIdx].classList.add('incorrect');
+                buttons[q.answer].classList.add('correct');
             }
 
-            Array.from(optionButtons).forEach(btn => {
-                btn.setAttribute('disabled', 'true');
-            });
+            Array.from(buttons).forEach(btn => btn.disabled = true);
 
             explanationBox.textContent = q.explanation;
             explanationBox.style.display = 'block';
-
-            if (currentQuestionIndex < activeQuestions.length - 1) {
-                nextBtn.textContent = 'Next Question ➔';
-            } else {
-                nextBtn.textContent = 'View Final Score 🏆';
-            }
-            nextBtn.style.display = 'inline-flex';
+            nextBtn.style.display = 'block';
+            scoreTracker.textContent = `Score: ${score}`;
         }
 
-        // Next Question Handler
-        function handleNextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < activeQuestions.length) {
+        nextBtn.onclick = () => {
+            currentIndex++;
+            if (currentIndex < activeQuestions.length) {
                 loadQuestion();
             } else {
                 showResults();
             }
-        }
+        };
 
-        // Show Final Results
         function showResults() {
             quizScreen.style.display = 'none';
             resultScreen.style.display = 'block';
 
-            finalScore.textContent = `${score}/${activeQuestions.length}`;
-
-            const percentage = (score / activeQuestions.length) * 100;
-
-            if (percentage === 100) {
-                performanceTitle.textContent = "🏆 Legendary Cricketer!";
-                performanceDesc.textContent = "Unbelievable performance! You possess master-level knowledge of cricket history and stats.";
-            } else if (percentage >= 70) {
-                performanceTitle.textContent = "🌟 Star Performer!";
-                performanceDesc.textContent = "Great knock! You really know your way around cricket records and iconic moments.";
-            } else if (percentage >= 40) {
-                performanceTitle.textContent = "🏏 Solid All-Rounder!";
-                performanceDesc.textContent = "Decent effort on the pitch. A little more practice and you'll be hitting centuries!";
-            } else {
-                performanceTitle.textContent = "🌱 Grassroots Fan";
-                performanceDesc.textContent = "Good try! Time to catch up on some classic match highlights and test your skills again.";
-            }
+            document.getElementById('final-score').textContent = `${score}/${activeQuestions.length}`;
+            document.getElementById('result-user-title').textContent = `Challenge Complete, ${playerProfile.name}!`;
+            document.getElementById('performance-desc').textContent = 
+                `Player: ${playerProfile.name} (Age ${playerProfile.age}) | Correct Answers: ${score} / ${activeQuestions.length}`;
         }
 
-        // Event Listeners
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', handleNextQuestion);
-        restartBtn.addEventListener('click', startQuiz);
+        document.getElementById('restart-btn').onclick = startQuiz;
     </script>
 </body>
 </html>
